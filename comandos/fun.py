@@ -19,7 +19,7 @@ class Testeos2(commands.Cog):
                 await asyncio.sleep(interval/1000)
         commands.Bot.loop.create_task(cambiar_color_rol())
 
-        
+
 async def setup(bot:commands.Bot):
     #for f in os.listdir('./diversion'):
     #        if f.endswith('.py'):

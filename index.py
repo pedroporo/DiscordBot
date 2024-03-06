@@ -6,12 +6,14 @@ import mysql.connector
 import os
 from dotenv import load_dotenv
 load_dotenv()
+from database import data
 #client = discord.Client(intents=discord.Intents.all())
+data.databaseConnect()
 client = commands.Bot(command_prefix='.', intents=discord.Intents.all())
 db = mysql.connector.connect(host="localhost",
                                      user="root",
                                      password="1234",
-                                     database="discordtest",
+                                     database="discord",
                                      port=3306,
                                      autocommit=True
                                     )
@@ -29,8 +31,11 @@ async def on_ready():
             await client.load_extension(f'comandos.{f[:-3]}')
     sincro=await client.tree.sync()
     print("Comandos sincronizados "+str(len(sincro)))
+    getServers()
    
 @client.tree.command(name="rol_arcoiris",description="Este comando hace que un rol parsado cambie de color constantemente")
+@commands.has_permissions(manage_roles=True)
+@commands.bot_has_permissions(manage_roles=True)
 async def rol(interaction:discord.Interaction,role:discord.Role):
     await interaction.response.send_message(content="Canbiando de color el rol")
     async def cambiar_color_rol():
@@ -48,11 +53,11 @@ async def slash_command(interaction:discord.Interaction):
 async def reporte(interaction:discord.Interaction,usuario:discord.User,infraccion_cometida:str="Texto por defecto"):
     await interaction.response.send_message(f"Reporte al usuario {usuario.display_name} completada")
 
-    cursor.execute(f"INSERT INTO `mensaje`(`channel_id`,`id_afectado`, `message`) VALUES ('{interaction.channel_id}','{usuario.id}', '{infraccion_cometida}')")
+    cursor.execute(f"INSERT INTO `reportes`(`channel_id`,`id_afectado`, `message`) VALUES ('{interaction.channel_id}','{usuario.id}', '{infraccion_cometida}')")
 
 @client.tree.command(name="verreportes",description="Comando usado por administradores para ver el mal comportamiento de los usuarios")
 async def verreporte(interaction:discord.Interaction,usuario:discord.User):
-    cursor.execute(f"SELECT message FROM mensaje WHERE id_afectado = {usuario.id};")
+    cursor.execute(f"SELECT message FROM reportes WHERE id_afectado = {usuario.id};")
     infracciones=[i['message'] for i in cursor.fetchall()]
     mbed = discord.Embed(
        title=f"Infracciones de {usuario.display_name}",
@@ -116,6 +121,7 @@ async def reloadAll(ctx):
         channel = client.get_channel(675360472622432291)
         await channel.send(f"Hubo un error en el recargo, reinicia el bot completamente. <@&332459579789017091>")
         raise e
+
 
 
 

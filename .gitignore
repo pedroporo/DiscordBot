@@ -3,4 +3,3 @@
 *.env.local
 *.env.staging
 .env
-.env
