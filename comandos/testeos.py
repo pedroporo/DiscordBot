@@ -6,7 +6,7 @@ class Testeos(commands.Cog):
         self.bot = bot
     @app_commands.command(name="estension",description="Esto es un test")
     async def exten(self,interaction:discord.Interaction):
-        await interaction.response.send_message("Hola Mundo!")
+        await interaction.response.send_message("Alo!")
 async def setup(bot:commands.Bot):
     await bot.add_cog(Testeos(bot))
         
