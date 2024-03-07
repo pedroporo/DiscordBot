@@ -37,13 +37,35 @@ async def on_ready():
 @commands.has_permissions(manage_roles=True)
 @commands.bot_has_permissions(manage_roles=True)
 async def rol(interaction:discord.Interaction,role:discord.Role):
-    await interaction.response.send_message(content="Canbiando de color el rol")
-    async def cambiar_color_rol():
-        while True:
-            r = random.randint(0,0xFFFFFF)
-            await role.edit(color=discord.Colour(r))
-            await asyncio.sleep(interval/1000)
-    client.loop.create_task(cambiar_color_rol())
+    cursor.execute(f"SELECT idRol FROM rolRainbow WHERE idServidor = {interaction.guild_id};")
+    roles=[int(i['idRol']) for i in cursor.fetchall()]
+    if role.id not in roles:
+        await interaction.response.send_message(content="Canbiando de color el rol")
+        cursor.execute(f"INSERT INTO `rolRainbow`(`idRol`,`idServidor`) VALUES ('{role.id}','{interaction.guild_id}')")
+    else:
+        await interaction.response.send_message(content="Este rol ya esta en modo arcoiris")
+
+class rolesds(enumerate):
+    cursor.execute(f"SELECT idRol FROM rolRainbow;"),
+    roles=[int(i['idRol']) for i in cursor.fetchall()]
+
+def is_me():
+    def predicate(interaction: discord.Interaction) -> bool:
+        return interaction.user.id == 85309593344815104
+    return discord.app_commands.check(predicate)
+
+@tree.command()
+@is_me()
+async def only_me(interaction: discord.Interaction):
+    await interaction.response.send_message('Only you!')
+
+@client.tree.command(name="stop_arcoiris",description="Para el cambio de color de un rol")
+@commands.has_permissions(manage_roles=True)
+@commands.bot_has_permissions(manage_roles=True)
+
+async def stop_arcoiris(interaction:discord.Interaction,role:discord.Role):
+    print(role.id+"h")
+    
 
 @client.tree.command(name="test",description="Esto es un test")
 async def slash_command(interaction:discord.Interaction):
@@ -69,10 +91,7 @@ async def verreporte(interaction:discord.Interaction,usuario:discord.User):
 def getServers():
     cursor.execute(f"SELECT id FROM servidores;")
     lista= [int(i['id']) for i in cursor.fetchall()]
-    print(lista)
-    
     for servidor in client.guilds:
-        print(f"ID= {servidor.id} , Nombre={servidor.name}")
         #cursor.execute(f"SELECT id FROM servidores WHERE id = {servidor.id};")
         #lista= [int(i['id']) for i in cursor.fetchall()]
         if servidor.id not in lista:

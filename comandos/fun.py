@@ -4,7 +4,15 @@ from discord.ext import commands
 import os
 import random
 import asyncio
-
+import mysql.connector
+db = mysql.connector.connect(host="localhost",
+                                     user="root",
+                                     password="1234",
+                                     database="discord",
+                                     port=3306,
+                                     autocommit=True
+                                    )
+cursor = db.cursor(dictionary=True)
 class Testeos2(commands.Cog):
     def __init__(self, bot:commands.Bot) -> None:
         self.bot = bot
@@ -19,7 +27,17 @@ class Testeos2(commands.Cog):
                 await asyncio.sleep(interval/1000)
         commands.Bot.loop.create_task(cambiar_color_rol())
 
+async def arcoiris():
+    interval=60000
+    cursor.execute(f"SELECT rolId FROM rolRainbow;")
+    roles=[int(i['rolId']) for i in cursor.fetchall()]
+    cursor.execute(f"SELECT id FROM servidores;")
+    servidores= [int(i['id']) for i in cursor.fetchall()]
 
+    while True:
+            r = random.randint(0,0xFFFFFF)
+            await role.edit(color=discord.Colour(r))
+            await asyncio.sleep(interval/1000)
 async def setup(bot:commands.Bot):
     #for f in os.listdir('./diversion'):
     #        if f.endswith('.py'):
