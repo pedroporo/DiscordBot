@@ -54,7 +54,7 @@ def is_me():
         return interaction.user.id == 85309593344815104
     return discord.app_commands.check(predicate)
 
-@tree.command()
+@client.tree.command()
 @is_me()
 async def only_me(interaction: discord.Interaction):
     await interaction.response.send_message('Only you!')
