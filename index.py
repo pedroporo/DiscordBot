@@ -64,7 +64,7 @@ async def only_me(interaction: discord.Interaction):
 @commands.bot_has_permissions(manage_roles=True)
 
 async def stop_arcoiris(interaction:discord.Interaction,role:discord.Role):
-    print(role.id+"h")
+    print(str(role.id)+"h")
     
 
 @client.tree.command(name="test",description="Esto es un test")
@@ -117,8 +117,8 @@ async def recargarcomandos(interaction:discord.Interaction):
 @commands.is_owner()
 async def reload(ctx, cog):
     try:
-        client.unload_extension(f"comandos.{cog}")
-        client.load_extension(f"comandos.{cog}")
+        await client.unload_extension(f"comandos.{cog}")
+        await client.load_extension(f"comandos.{cog}")
         # Alerts the chat where the command was sent, that the Cog has been reloaded.
         await ctx.send(f"{cog} has been reloaded.", delete_after=10)
     except Exception as e:
@@ -138,7 +138,7 @@ async def reloadAll(ctx):
         await ctx.send(f"Reinicio completado.", delete_after=10)
     except Exception as e:
         channel = client.get_channel(675360472622432291)
-        await channel.send(f"Hubo un error en el recargo, reinicia el bot completamente. <@&332459579789017091>")
+        await channel.send(f"Hubo un error en el recargo, reinicia el bot completamente. <@332459579789017091>")
         raise e
 
 
