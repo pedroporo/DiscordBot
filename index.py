@@ -7,6 +7,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 from database import data
+from comandos.fun import arcoiris
 #client = discord.Client(intents=discord.Intents.all())
 data.databaseConnect()
 client = commands.Bot(command_prefix='.', intents=discord.Intents.all())
@@ -31,6 +32,7 @@ async def on_ready():
             await client.load_extension(f'comandos.{f[:-3]}')
     sincro=await client.tree.sync()
     print("Comandos sincronizados "+str(len(sincro)))
+    await arcoiris(client)
     getServers()
    
 @client.tree.command(name="rol_arcoiris",description="Este comando hace que un rol parsado cambie de color constantemente")
@@ -59,12 +61,7 @@ def is_me():
 async def only_me(interaction: discord.Interaction):
     await interaction.response.send_message('Only you!')
 
-@client.tree.command(name="stop_arcoiris",description="Para el cambio de color de un rol")
-@commands.has_permissions(manage_roles=True)
-@commands.bot_has_permissions(manage_roles=True)
 
-async def stop_arcoiris(interaction:discord.Interaction,role:discord.Role):
-    print(str(role.id)+"h")
     
 
 @client.tree.command(name="test",description="Esto es un test")
@@ -110,7 +107,7 @@ async def recargarcomandos(interaction:discord.Interaction):
         await interaction.response.send_message(f"Reinicio completado.", delete_after=10)
     except Exception as e:
         channel = client.get_channel(675360472622432291)
-        await channel.send(f"Hubo un error en el recargo, reinicia el bot completamente. <@&332459579789017091>")
+        await channel.send(f"Hubo un error en el recargo, reinicia el bot completamente. <@332459579789017091>")
         raise e
 @client.command()
 #@commands.has_permissions(administrator=True)
@@ -123,7 +120,7 @@ async def reload(ctx, cog):
         await ctx.send(f"{cog} has been reloaded.", delete_after=10)
     except Exception as e:
         channel = client.get_channel(675360472622432291)
-        await channel.send(f"Cog: {cog} did not start up properly, restart the bot completely. <@&332459579789017091>")
+        await channel.send(f"Cog: {cog} did not start up properly, restart the bot completely. <@332459579789017091>")
         raise e
     
 @client.command()
