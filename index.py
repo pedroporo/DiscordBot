@@ -26,6 +26,7 @@ interval=60000
 
 @client.event
 async def on_ready():
+    getServers()
     print('Logueado como: {0.user}'.format(client))
     for f in os.listdir('./comandos'):
         if f.endswith('.py'):
@@ -33,7 +34,7 @@ async def on_ready():
     sincro=await client.tree.sync()
     print("Comandos sincronizados "+str(len(sincro)))
     await arcoiris(client)
-    getServers()
+    
    
 @client.tree.command(name="rol_arcoiris",description="Este comando hace que un rol parsado cambie de color constantemente")
 @commands.has_permissions(manage_roles=True)
@@ -47,9 +48,6 @@ async def rol(interaction:discord.Interaction,role:discord.Role):
     else:
         await interaction.response.send_message(content="Este rol ya esta en modo arcoiris")
 
-class rolesds(enumerate):
-    cursor.execute(f"SELECT idRol FROM rolRainbow;"),
-    roles=[int(i['idRol']) for i in cursor.fetchall()]
 
 def is_me():
     def predicate(interaction: discord.Interaction) -> bool:

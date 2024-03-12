@@ -13,4 +13,5 @@ def databaseConnect():
         cursor.execute("CREATE table IF NOT EXISTS reportes (id_afectado varchar(100) PRIMARY KEY,infraccion varchar(100))")
         cursor.execute("CREATE table IF NOT EXISTS servidores (id varchar(19) PRIMARY KEY,nombre varchar(100))")
         cursor.execute("CREATE table IF NOT EXISTS rolRainbow (idRol varchar(100) PRIMARY KEY,idServidor varchar(100))")
-        cursor.execute("ALTER TABLE rolRainbow ADD FOREIGN KEY (idServidor) REFERENCES servidores(id);")
+        cursor.execute("ALTER TABLE rolRainbow ADD FOREIGN KEY (idServidor) REFERENCES servidores(id) ON DELETE CASCADE;")
+databaseConnect()
